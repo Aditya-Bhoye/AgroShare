@@ -1,0 +1,271 @@
+/* Reference: Roland Donald Profile Card */
+.contact-card-wrapper {
+    width: 100%;
+    /* The modal container handles the max-width (1000px) */
+    background: #fff;
+    border-radius: 40px;
+    /* Matches outer modal */
+    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 500px;
+}
+
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Left Sidebar --- */
+.profile-sidebar {
+    padding: 2rem;
+    background: #fff;
+    border-right: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Center vertically since menu is gone */
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-bottom removed or reduced since it's the only thing */
+    margin-bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+/* PFP */
+.ref-pfp-container {
+    position: relative;
+    width: 200px;
+    /* Big Icon */
+    height: 200px;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* Add shadow for depth */
+}
+
+.ref-pfp-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    /* White border */
+}
+
+.ref-pfp-edit-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: #F57C00;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ref-pfp-container:hover .ref-pfp-edit-btn {
+    transform: scale(1.1);
+}
+
+/* Role Sticker */
+
+
+@keyframes popIn {
+    0% {
+        transform: translateX(-50%) scale(0);
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.profile-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+
+
+
+/* Menu */
+.profile-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: #666;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.menu-item:hover {
+    background: #fdf3e8;
+    color: #F57C00;
+}
+
+.menu-item.active {
+    background: #FFF3E0;
+    color: #E65100;
+}
+
+.menu-item.logout {
+    margin-top: auto;
+    color: #888;
+}
+
+.menu-item.logout:hover {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+/* --- Right Content --- */
+.profile-content {
+    padding: 2.5rem 3rem;
+    background: #fff;
+}
+
+.content-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 2rem;
+}
+
+/* Form Grid */
+.ref-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.ref-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ref-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.ref-form-group label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-left: 4px;
+}
+
+.ref-input {
+    background: #F5F7F9;
+    /* Approx light gray from image */
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    color: #333;
+    outline: none;
+    font-weight: 500;
+}
+
+.ref-input:focus {
+    box-shadow: 0 0 0 2px #ffe0b2;
+}
+
+/* Role Buttons */
+.role-options-container {
+    display: flex;
+    gap: 12px;
+}
+
+.role-select-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #EEE;
+    background: #FFF;
+    color: #666;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+}
+
+.role-select-btn:hover {
+    border-color: #FFB74D;
+    color: #F57C00;
+    transform: translateY(-2px);
+}
+
+.role-select-btn.active {
+    background: linear-gradient(135deg, #F57C00, #EF6C00);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3);
+}
+
+/* Actions */
+.ref-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.btn-discard {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid #F57C00;
+    color: #F57C00;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-discard:hover {
+    background: #fff3e0;
+}
+
+.btn-save {
+    padding: 12px 30px;
+    border-radius: 12px;
+    border: none;
+    background: #EF6C00;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
+}
+
+.btn-save:hover {
+    background: #E65100;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(239, 108, 0, 0.4);
+}

@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Light Theme (Default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9f9f9;
+    /* Cards image bg */
+    --bg-tertiary: #f0f0f0;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+    --border-color: #e0e0e0;
+    --button-bg: #1a1a1a;
+    --button-text: #ffffff;
+    --accent-color: #4CAF50;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --input-bg: transparent;
+    --card-bg: #ffffff;
+}
+
+/* Clerk User Button Tweaks */
+:root {
+    --cl-userButtonPopoverCard-background-color: rgba(255, 255, 255, 0.5);
+}
+
+.cl-userButtonPopoverCard,
+.cl-userButtonPopover-card {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Hide the default "Manage account" button */
+.cl-userButtonPopoverActionButton[data-localization-key="userButton.action.manageAccount"],
+button[data-localization-key="userButton.action.manageAccount"],
+.cl-userButtonPopoverActionButton[aria-label="Manage account"],
+.cl-userButtonPopoverActionButton[aria-label="Manage Account"],
+button[aria-label="Manage account"],
+button[aria-label="Manage Account"],
+/* Fallback: internal class often used for the cog icon container's parent button */
+.cl-userButtonPopoverActionButton__manageAccount {
+    display: none !important;
+}
