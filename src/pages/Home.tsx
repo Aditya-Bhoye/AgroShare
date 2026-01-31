@@ -41,7 +41,8 @@ const machineryData = [
         ownerExperience: "8",
         totalRents: "245",
         location: [20.0112, 73.7902], // Nashik Road area
-        gallery: [tractorHero, tractorSide, tractorFront, tractorBack]
+        gallery: [tractorHero, tractorSide, tractorFront, tractorBack],
+        owner_id: "demo-owner-1"
     },
     {
         id: 2,
@@ -56,7 +57,8 @@ const machineryData = [
         ownerExperience: "12",
         totalRents: "189",
         location: [19.9975, 73.7898], // Central Nashik
-        gallery: [harvesterHero, harvesterSide, harvesterFront, harvesterBack]
+        gallery: [harvesterHero, harvesterSide, harvesterFront, harvesterBack],
+        owner_id: "demo-owner-2"
     },
     {
         id: 3,
@@ -71,7 +73,8 @@ const machineryData = [
         ownerExperience: "6",
         totalRents: "156",
         location: [19.9615, 73.7897], // Panchavati area
-        gallery: [planterHero, planterSide, planterRear]
+        gallery: [planterHero, planterSide, planterRear],
+        owner_id: "demo-owner-3"
     },
     {
         id: 4,
@@ -86,7 +89,8 @@ const machineryData = [
         ownerExperience: "7",
         totalRents: "203",
         location: [20.0359, 73.7721], // Malegaon Road area
-        gallery: [sprayerHero, sprayerSide, sprayerBoom]
+        gallery: [sprayerHero, sprayerSide, sprayerBoom],
+        owner_id: "demo-owner-4"
     },
     {
         id: 5,
@@ -101,7 +105,8 @@ const machineryData = [
         ownerExperience: "10",
         totalRents: "178",
         location: [19.9872, 73.8315], // Gangapur Road area
-        gallery: [ploughHero, ploughSide, ploughRear]
+        gallery: [ploughHero, ploughSide, ploughRear],
+        owner_id: "demo-owner-5"
     },
     {
         id: 6,
@@ -116,7 +121,8 @@ const machineryData = [
         ownerExperience: "5",
         totalRents: "134",
         location: [20.0089, 73.7654], // Trimbak Road area
-        gallery: [tillerSide, tillerRear]
+        gallery: [tillerSide, tillerRear],
+        owner_id: "demo-owner-6"
     },
 
     // --- NEW ITEMS (Only shown on filter/search) ---
@@ -135,7 +141,8 @@ const machineryData = [
         ownerExperience: "15",
         totalRents: "312",
         location: [19.9500, 73.8000], // Nashik Road (Near Station)
-        gallery: [tractorHero, tractorSide, tractorBack]
+        gallery: [tractorHero, tractorSide, tractorBack],
+        owner_id: "demo-owner-101"
     },
     {
         id: 102,
@@ -150,7 +157,8 @@ const machineryData = [
         ownerExperience: "9",
         totalRents: "190",
         location: [20.0500, 73.8200], // Mhasrul
-        gallery: [tractorHero, tractorFront, tractorSide]
+        gallery: [tractorHero, tractorFront, tractorSide],
+        owner_id: "demo-owner-102"
     },
     {
         id: 103,
@@ -165,7 +173,8 @@ const machineryData = [
         ownerExperience: "4",
         totalRents: "85",
         location: [19.9300, 73.7400], // Pathardi Phata
-        gallery: [tractorHero, tractorSide, tractorBack]
+        gallery: [tractorHero, tractorSide, tractorBack],
+        owner_id: "demo-owner-103"
     },
 
     // HARVESTERS
@@ -182,7 +191,8 @@ const machineryData = [
         ownerExperience: "11",
         totalRents: "210",
         location: [20.1000, 73.9300], // Ozar
-        gallery: [harvesterHero, harvesterSide, harvesterBack]
+        gallery: [harvesterHero, harvesterSide, harvesterBack],
+        owner_id: "demo-owner-201"
     },
     {
         id: 202,
@@ -197,7 +207,8 @@ const machineryData = [
         ownerExperience: "18",
         totalRents: "405",
         location: [19.8500, 74.0000], // Sinnar Area
-        gallery: [harvesterHero, harvesterFront, harvesterSide]
+        gallery: [harvesterHero, harvesterFront, harvesterSide],
+        owner_id: "demo-owner-202"
     },
 
     // PLANTERS
@@ -214,7 +225,8 @@ const machineryData = [
         ownerExperience: "6",
         totalRents: "98",
         location: [20.0200, 73.7500], // Gangapur
-        gallery: [planterHero, planterSide, planterRear]
+        gallery: [planterHero, planterSide, planterRear],
+        owner_id: "demo-owner-301"
     },
     {
         id: 302,
@@ -229,7 +241,8 @@ const machineryData = [
         ownerExperience: "12",
         totalRents: "167",
         location: [19.9000, 73.8300], // Deolali Camp
-        gallery: [planterHero, planterRear, planterSide]
+        gallery: [planterHero, planterRear, planterSide],
+        owner_id: "demo-owner-302"
     },
 
     // SPRAYERS
@@ -246,7 +259,8 @@ const machineryData = [
         ownerExperience: "20",
         totalRents: "890",
         location: [20.0800, 73.8500], // Adgaon
-        gallery: [sprayerHero, sprayerSide, sprayerBoom]
+        gallery: [sprayerHero, sprayerSide, sprayerBoom],
+        owner_id: "demo-owner-401"
     },
     {
         id: 402,
@@ -261,7 +275,8 @@ const machineryData = [
         ownerExperience: "3",
         totalRents: "45",
         location: [19.9700, 73.7700], // Cidco
-        gallery: [sprayerHero, sprayerBoom, sprayerSide]
+        gallery: [sprayerHero, sprayerBoom, sprayerSide],
+        owner_id: "demo-owner-402"
     },
 
     // PLOUGHS
@@ -278,7 +293,8 @@ const machineryData = [
         ownerExperience: "14",
         totalRents: "330",
         location: [19.9900, 73.7400], // Satpur
-        gallery: [ploughHero, ploughSide, ploughRear]
+        gallery: [ploughHero, ploughSide, ploughRear],
+        owner_id: "demo-owner-501"
     },
     {
         id: 502,
@@ -293,13 +309,15 @@ const machineryData = [
         ownerExperience: "25",
         totalRents: "600",
         location: [20.0050, 73.8100], // Panchavati (East)
-        gallery: [ploughHero, ploughRear, ploughSide]
+        gallery: [ploughHero, ploughRear, ploughSide],
+        owner_id: "demo-owner-502"
     }
 ];
 
 import { useState, useEffect } from 'react';
 import MachineryDetail from '../components/MachineryDetail';
 import Footer from '../components/Footer';
+import ShowcaseCard from '../components/ShowcaseCard';
 
 const SEARCH_PHRASES = [
     "Search for Tractors near me...",
@@ -369,7 +387,8 @@ const Home = () => {
                     location: [p.lat, p.lng],
                     gallery: p.gallery_urls,
                     totalRents: "0",
-                    ownerExperience: "0"
+                    ownerExperience: "0",
+                    owner_id: p.owner_id // Pass owner_id
                 }));
                 setProducts(formatted);
             }
@@ -735,101 +754,11 @@ const Home = () => {
                     transition: 'all 0.5s ease-in-out'
                 }}>
                     {visibleMachinery.map((item) => (
-                        <div key={item.id} style={{
-                            backgroundColor: 'var(--card-bg)',
-                            borderRadius: '20px',
-                            overflow: 'hidden',
-                            boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
-                            border: '1px solid var(--border-color)',
-                            textAlign: 'left',
-                            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)', // Smooth transition for sorting
-                            cursor: 'pointer',
-                            position: 'relative'
-                        }}
-                            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                        <ShowcaseCard
+                            key={item.id}
+                            item={item}
                             onClick={() => setSelectedMachine(item)}
-                        >
-                            {/* Distance Badge */}
-                            {item.distance !== null && (
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '15px',
-                                    left: '15px',
-                                    background: 'rgba(255, 255, 255, 0.9)',
-                                    backdropFilter: 'blur(4px)',
-                                    padding: '6px 12px',
-                                    borderRadius: '20px',
-                                    fontSize: '0.85rem',
-                                    fontWeight: '600',
-                                    color: '#2e7d32',
-                                    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-                                    zIndex: 10,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px'
-                                }}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
-                                    {item.distance.toFixed(1)} km
-                                </div>
-                            )}
-
-                            <div style={{
-                                height: '200px',
-                                width: '100%',
-                                backgroundColor: 'var(--bg-secondary)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '1rem'
-                            }}>
-                                <img src={item.image} alt={item.type} style={{
-                                    maxWidth: '100%',
-                                    maxHeight: '100%',
-                                    objectFit: 'contain'
-                                }} />
-                            </div>
-                            <div style={{ padding: '1.5rem' }}>
-                                {/* ... rest of card content ... */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>{item.title}</h3>
-                                    <span style={{ backgroundColor: '#e8f5e9', color: 'var(--accent-color)', padding: '4px 8px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: 'bold' }}>{item.rating} ★</span>
-                                </div>
-                                <p style={{
-                                    color: 'var(--text-secondary)',
-                                    fontSize: '0.9rem',
-                                    marginBottom: '1rem',
-                                    display: '-webkit-box',
-                                    WebkitLineClamp: 2,
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    minHeight: '2.8em'
-                                }}>{item.desc}</p>
-
-                                {/* Owner Section */}
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-                                    <img src={item.ownerImage} alt={item.ownerName} style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ddd' }} />
-                                    <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: '500' }}>{item.ownerName}</span>
-                                </div>
-
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-primary)' }}>{item.price}<span style={{ fontSize: '0.9rem', fontWeight: '400', color: '#999' }}>/hr</span></span>
-                                    <button style={{
-                                        padding: '8px 16px',
-                                        backgroundColor: 'var(--button-bg)',
-                                        color: 'var(--button-text)',
-                                        border: 'none',
-                                        borderRadius: '20px',
-                                        fontSize: '0.9rem',
-                                        cursor: 'pointer'
-                                    }}>Rent Now</button>
-                                </div>
-                            </div>
-                        </div>
+                        />
                     ))}
                 </div>
             </div>

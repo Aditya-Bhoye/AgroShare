@@ -1,17 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import {
     Car,
     MessageCircle,
-    Settings,
     Search,
-    ChevronDown,
     MoreHorizontal,
-    Clock
+    ArrowLeft
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { getSellerRentalRequests } from '../services/api';
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import './SellerDashboard.css';
 
 // Dark Mode Style for Google Maps
@@ -96,17 +94,20 @@ const darkMapStyle = [
     },
 ];
 
-const SellerDashboard = () => {
+const SellerProfile = () => {
+    const { sellerId } = useParams();
+    const navigate = useNavigate();
     const { user } = useUser();
+
+    // Seller Data
+    const [seller, setSeller] = useState<any>(null);
     const [products, setProducts] = useState<any[]>([]);
-    const [rentalRequests, setRentalRequests] = useState<any[]>([]);
+    const [clientTrips, setClientTrips] = useState<any[]>([]); // trips between this client and seller
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     // Map State
     const [mapCenter, setMapCenter] = useState({ lat: 20.0, lng: 73.78 }); // Default Nashik
-    const [userAddress, setUserAddress] = useState<string>('NA');
-    const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
 
     // Load Google Maps Script
     const { isLoaded, loadError } = useJsApiLoader({
@@ -115,7 +116,7 @@ const SellerDashboard = () => {
     });
 
     const onLoad = useCallback(function callback() {
-        // map state not needed here
+        // map state handled via center prop
     }, []);
 
     const onUnmount = useCallback(function callback() {
@@ -123,10 +124,10 @@ const SellerDashboard = () => {
     }, []);
 
     useEffect(() => {
-        if (user) {
-            loadDashboardData();
+        if (sellerId) {
+            loadSellerData();
         }
-    }, [user]);
+    }, [sellerId, user]);
 
     useEffect(() => {
         if (products.length > 0 && !selectedProduct) {
@@ -139,65 +140,84 @@ const SellerDashboard = () => {
         if (selectedProduct && selectedProduct.lat && selectedProduct.lng) {
             setMapCenter({ lat: selectedProduct.lat, lng: selectedProduct.lng });
         }
-
-        // Find active request for this product to show user location
-        if (selectedProduct && rentalRequests.length > 0) {
-            const activeRequest = rentalRequests.find(r => r.product_id === selectedProduct.id && r.status !== 'rejected');
-            if (activeRequest && activeRequest.requester && activeRequest.requester.address) {
-                setUserAddress(activeRequest.requester.address);
-            } else {
-                setUserAddress('NA');
-            }
-        } else {
-            setUserAddress('NA');
-        }
-
-    }, [selectedProduct, rentalRequests]);
-
-    // Calculate Route
-    useEffect(() => {
-        if (isLoaded && selectedProduct && selectedProduct.lat && userAddress !== 'NA') {
-            const directionsService = new google.maps.DirectionsService();
-
-            // For demo: Use product lat/lng as Origin.
-            // Use User Address string as Destination (Google Maps Geocoding will handle it).
-            // Or if we had coordinates for user, better. Assuming address string for now.
-
-            directionsService.route(
-                {
-                    origin: { lat: selectedProduct.lat, lng: selectedProduct.lng },
-                    destination: userAddress, // Maps API will try to geocode this
-                    travelMode: google.maps.TravelMode.DRIVING,
-                },
-                (result, status) => {
-                    if (status === google.maps.DirectionsStatus.OK && result) {
-                        setDirections(result);
-                    } else {
-                        console.error(`Directions request failed due to ${status}`);
-                        setDirections(null);
-                    }
-                }
-            );
-        } else {
-            setDirections(null);
-        }
-    }, [isLoaded, selectedProduct, userAddress]);
+    }, [selectedProduct, clientTrips, user]);
 
 
-    const loadDashboardData = async () => {
-        if (!user) return;
+    const loadSellerData = async () => {
+        if (!sellerId) return;
         setLoading(true);
-        try {
-            // Fetch products
-            const { data: productsData } = await supabase
-                .from('products')
-                .select('*')
-                .eq('owner_id', user.id);
-            if (productsData) setProducts(productsData);
 
-            // Fetch requests (which include requester details via api.ts logic)
-            const requests = await getSellerRentalRequests(user.id);
-            setRentalRequests(requests);
+        // --- DEMO DATA HANDLING ---
+        if (sellerId.startsWith('demo-owner-')) {
+            // Simulate data for demo items
+            setSeller({
+                id: sellerId,
+                fullName: "Review Owner (Demo)",
+                imageUrl: "https://i.pravatar.cc/150?img=12",
+                email: "demo.owner@agroshare.com"
+            });
+            // Create a dummy product based on the known products or just generic
+            setProducts([{
+                id: 999,
+                name: "Demo Tractor",
+                image_url: "https://images.unsplash.com/photo-1592878931055-63657cd30089?auto=format&fit=crop&q=80&w=1000",
+                price_per_hour: 1200,
+                rating: 4.8,
+                lat: 20.0,
+                lng: 73.78,
+                category: "Tractor"
+            }]);
+            setLoading(false);
+            return;
+        }
+
+        try {
+            // 1. Fetch Seller Details
+            // Users are in Clerk, but we sync them to a 'users' table in Supabase?
+            // Existing code implies 'users' table join in products query: select('*, users(full_name, avatar_url)')
+            // So we can fetch from 'users' table directly.
+
+            // Wait, does 'users' table exist? api.ts has getSellerRentalRequests using 'products!inner(owner_id)'
+            // Let's assume we can fetch products and get owner info from there for now if users table isn't directly queryable by ID easily or RLS blocks it.
+            // Actually, best to fetch products first.
+
+            const { data: productsData, error: prodError } = await supabase
+                .from('products')
+                .select('*, users(full_name, avatar_url, email)') // select owner details
+                .eq('owner_id', sellerId);
+
+            if (prodError) console.error("Error fetching products:", prodError);
+
+            if (productsData && productsData.length > 0) {
+                setProducts(productsData);
+                // Extract seller info from the first product
+                const first = productsData[0];
+                if (first.users) {
+                    setSeller({
+                        id: sellerId,
+                        fullName: first.users.full_name,
+                        imageUrl: first.users.avatar_url,
+                        email: first.users.email
+                    });
+                }
+            }
+
+            // 2. Fetch Client's Trips with this Seller
+            // Request where requester_id = user.id AND product.owner_id = sellerId
+            if (user) {
+                // Better: Fetch all my requests, then filter in JS for this seller.
+
+                const { data: myRequests } = await supabase
+                    .from('rental_requests')
+                    .select('*, products(*)')
+                    .eq('requester_id', user.id);
+
+                if (myRequests) {
+                    const relevantRequests = myRequests.filter((r: any) => r.products && r.products.owner_id === sellerId);
+                    setClientTrips(relevantRequests);
+                }
+            }
+
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -215,10 +235,14 @@ const SellerDashboard = () => {
 
     return (
         <div className="seller-dashboard-container">
-            {/* Sidebar */}
+            {/* Sidebar (Read Only / Navigation) */}
             <aside className="dashboard-sidebar">
-                <div className="logo-icon">
-                    <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                <div
+                    className="logo-icon cursor-pointer"
+                    onClick={() => navigate(-1)}
+                    title="Go Back"
+                >
+                    <ArrowLeft size={20} color="white" />
                 </div>
                 <div className="nav-item active">
                     <Car size={20} />
@@ -226,30 +250,16 @@ const SellerDashboard = () => {
                 <div className="nav-item">
                     <MessageCircle size={20} />
                 </div>
-                <div className="nav-item">
-                    <Clock size={20} />
-                </div>
-
-                <div className="bottom-actions">
-                    <div className="nav-item">
-                        <Settings size={20} />
-                    </div>
-                    <div className="user-avatar-mini">
-                        <img src={user?.imageUrl} alt="User" />
-                    </div>
-                </div>
             </aside>
 
             {/* Main Content */}
             <main className="dashboard-main">
                 <div className="dashboard-header-row">
                     <div className="header-user-info">
-                        <h1>{user?.fullName || 'User'}</h1>
-                        <ChevronDown size={16} className="text-gray-500" />
+                        <h1>{seller ? `${seller.fullName}'s Profile` : 'Seller Profile'}</h1>
                     </div>
                     <div className="header-actions">
-                        <div className="date-pill">{new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                        <div className="status-check">Completed</div>
+                        <div className="date-pill">Viewing as Client</div>
                     </div>
                 </div>
 
@@ -306,10 +316,10 @@ const SellerDashboard = () => {
                                 </div>
 
                                 <div className="info-user-side">
-                                    <img src={user?.imageUrl} className="info-avatar" alt="User" />
-                                    <div className="info-name">{user?.firstName}</div>
-                                    <div className="info-sub">{user?.primaryEmailAddress?.emailAddress}</div>
-                                    {/* Removed Start Chat button */}
+                                    <img src={seller?.imageUrl || "https://i.pravatar.cc/150"} className="info-avatar" alt="Owner" />
+                                    <div className="info-name">{seller?.fullName || 'Seller'}</div>
+                                    <div className="info-sub">{seller?.email || 'Contact for details'}</div>
+                                    <button className="chat-btn mt-4">Start a chat</button>
                                 </div>
                             </div>
                         </div>
@@ -317,9 +327,6 @@ const SellerDashboard = () => {
                         {/* Map Section with Real Map */}
                         <div className="map-section">
                             <div className="map-view">
-                                {/* Map Top Metrics Removed */}
-
-
                                 {/* Google Map */}
                                 <div style={{ height: '100%', width: '100%', borderRadius: '16px', overflow: 'hidden' }}>
                                     {isLoaded ? (
@@ -334,23 +341,8 @@ const SellerDashboard = () => {
                                                 disableDefaultUI: true,
                                             }}
                                         >
-                                            {/* Show Marker if no route is being shown */}
-                                            {selectedProduct && selectedProduct.lat && !directions && (
+                                            {selectedProduct && selectedProduct.lat && (
                                                 <Marker position={{ lat: selectedProduct.lat, lng: selectedProduct.lng }} />
-                                            )}
-
-                                            {/* Show Route if available */}
-                                            {directions && (
-                                                <DirectionsRenderer
-                                                    directions={directions}
-                                                    options={{
-                                                        polylineOptions: {
-                                                            strokeColor: '#0055ff',
-                                                            strokeWeight: 5
-                                                        },
-                                                        suppressMarkers: false
-                                                    }}
-                                                />
                                             )}
                                         </GoogleMap>
                                     ) : (
@@ -370,56 +362,28 @@ const SellerDashboard = () => {
                                     )}
                                 </div>
                             </div>
-
-                            <div className="map-stats">
-                                <div className="route-timeline">
-                                    <div className="route-point start">
-                                        <div className="point-label">Start Point</div>
-                                        <div className="point-val">
-                                            {selectedProduct ? 'Machinery Location' : 'Select Product'}
-                                            <br />
-                                            <span className="text-xs text-gray-500">
-                                                {selectedProduct?.lat ? `${selectedProduct.lat.toFixed(4)}, ${selectedProduct.lng.toFixed(4)}` : 'Location not set'}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div className="route-point end">
-                                        <div className="point-label">Finish Point</div>
-                                        <div className="point-val">
-                                            {userAddress !== 'NA' ? 'Booking Location' : 'No Active Booking'}
-                                            <br />
-                                            <span className="text-xs text-gray-500">
-                                                {userAddress}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <div className="right-panel">
                         <div className="panel-header">
-                            <h2>Trips</h2>
+                            <h2>Your Trips</h2>
                             <div className="search-circle"><Search size={16} /></div>
                         </div>
 
                         <div className="trips-list">
                             {loading ? (
                                 <p className="text-center text-gray-500">Loading...</p>
-                            ) : rentalRequests.length === 0 ? (
-                                <p className="text-center text-gray-500">No rental requests</p>
+                            ) : clientTrips.length === 0 ? (
+                                <p className="text-center text-gray-500">No trips with this seller</p>
                             ) : (
-                                rentalRequests.map(req => (
+                                clientTrips.map(req => (
                                     <div className="trip-item" key={req.id}>
                                         <div className="trip-top">
                                             <div className="trip-user">
-                                                <div
-                                                    className="trip-avatar"
-                                                    style={{ backgroundImage: `url(${req.requester?.avatar_url || 'https://i.pravatar.cc/150'})` }}
-                                                ></div>
-                                                <span className="font-medium text-sm">{req.requester?.full_name || 'Agro User'}</span>
+                                                {/* In client view, show Product Image icon instead of User Avatar maybe? Or Seller Avatar? */}
+                                                {/* Showing Product Name */}
+                                                <span className="font-medium text-sm">{req.products?.name || 'Machinery'}</span>
                                             </div>
                                             <MoreHorizontal size={16} className="text-gray-500" />
                                         </div>
@@ -430,14 +394,13 @@ const SellerDashboard = () => {
                                             </span>
                                         </div>
                                         <div className="trip-details mt-1">
-                                            <span>Earned</span>
+                                            <span>Cost</span>
                                             <span className="text-white">{formatCurrency(req.total_price || 0)}</span>
                                         </div>
                                     </div>
                                 ))
                             )}
                         </div>
-                        <button className="view-history-btn">View history</button>
                     </div>
                 </div>
             </main>
@@ -445,4 +408,4 @@ const SellerDashboard = () => {
     );
 };
 
-export default SellerDashboard;
+export default SellerProfile;
