@@ -88,19 +88,31 @@ const CompleteProfileForm = ({ onClose, initialRole, initialTab = 'profile' }: {
 
                 {/* Right Content */}
                 <div className="profile-content">
+                    {/* Mobile Tab Switcher */}
+                    <div className="mobile-tabs">
+                        <button
+                            className={`mobile-tab-btn ${activeTab === 'profile' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('profile')}
+                        >
+                            Personal Info
+                        </button>
+                        <button
+                            className={`mobile-tab-btn ${activeTab === 'bookings' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('bookings')}
+                        >
+                            My Bookings
+                        </button>
+                    </div>
+
                     {activeTab === 'profile' ? (
                         <>
-                            <h2 className="content-title">Personal Information</h2>
+                            <h2 className="content-title desktop-only">Personal Information</h2>
 
                             <form className="ref-form" onSubmit={handleSubmit}>
                                 <div className="ref-form-grid">
-                                    <div className="ref-form-group">
-                                        <label>Full Name</label>
-                                        <input type="text" defaultValue={user?.fullName || ""} className="ref-input" />
-                                    </div>
-
-                                    <div className="ref-form-group">
-                                        <label>Role</label>
+                                    {/* Role - First as requested */}
+                                    <div className="ref-form-group full-width">
+                                        <label>I am a...</label>
                                         <div className="role-options-container">
                                             <button
                                                 type="button"
@@ -119,6 +131,7 @@ const CompleteProfileForm = ({ onClose, initialRole, initialTab = 'profile' }: {
                                         </div>
                                     </div>
 
+                                    {/* Email - Second */}
                                     <div className="ref-form-group full-width">
                                         <label>Email Address</label>
                                         <input
@@ -128,6 +141,11 @@ const CompleteProfileForm = ({ onClose, initialRole, initialTab = 'profile' }: {
                                             readOnly
                                             style={{ opacity: 0.7 }}
                                         />
+                                    </div>
+
+                                    <div className="ref-form-group">
+                                        <label>Full Name</label>
+                                        <input type="text" defaultValue={user?.fullName || ""} className="ref-input" />
                                     </div>
 
                                     <div className="ref-form-group full-width">
@@ -167,7 +185,7 @@ const CompleteProfileForm = ({ onClose, initialRole, initialTab = 'profile' }: {
                         </>
                     ) : (
                         <>
-                            <h2 className="content-title">My Bookings</h2>
+                            <h2 className="content-title desktop-only">My Bookings</h2>
                             <div className="bookings-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                 {bookings.length === 0 ? (
                                     <div style={{ textAlign: 'center', padding: '2rem', color: '#888' }}>
