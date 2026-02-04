@@ -498,3 +498,59 @@
         flex-direction: column;
     }
 }
+
+@media (max-width: 768px) {
+    .info-card {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .info-user-side {
+        border-top: 1px solid #2a303c;
+        padding-top: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .dashboard-sidebar {
+        display: none;
+        /* Often sidebars are hidden or become bottom bars on mobile, but for now let's just keep it or hide it if it takes space. partial hide might be better or bottom nav. User didn't ask for navbar changes, just "two cards" issue. Let's stick to the cards. */
+    }
+
+    .dashboard-main {
+        padding: 1rem;
+    }
+
+    .seller-dashboard-container {
+        flex-direction: column;
+        /* Stack sidebar if we kept it, but actually let's just fix the cards first */
+    }
+
+    /* Fix sidebar for mobile if we want */
+    .dashboard-sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0.5rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        background: var(--bg-card);
+        border-top: 1px solid #2a303c;
+    }
+
+    .seller-dashboard-container {
+        padding-bottom: 70px;
+        /* Space for bottom nav */
+    }
+
+    .bottom-actions {
+        display: none;
+        /* Hide bottom actions in mobile nav for simplicity */
+    }
+
+    .logo-icon {
+        display: none;
+    }
+}
