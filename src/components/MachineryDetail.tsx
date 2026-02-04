@@ -213,6 +213,9 @@ const MachineryDetail = ({ machine, onClose }: { machine: any, onClose: () => vo
     const [selectedImage, setSelectedImage] = useState(machine.image);
     const galleryImages = machine.gallery || [machine.image, machine.image, machine.image, machine.image];
 
+    // Tab state for Location/Reviews
+    const [activeTab, setActiveTab] = useState<'location' | 'reviews'>('location');
+
     // --- Next Image Logic ---
     const handleNextImage = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -400,6 +403,32 @@ const MachineryDetail = ({ machine, onClose }: { machine: any, onClose: () => vo
                         </button>
                     </div>
 
+                    {/* Mini Reviews Section in Owner Card Area */}
+                    <div className="mini-reviews-section">
+                        <div className="section-title">Recent Reviews</div>
+                        {reviews.slice(0, 2).map((review) => (
+                            <div key={review.id} className="mini-review-card">
+                                <div className="mini-review-header">
+                                    <img src={review.avatar} alt={review.name} />
+                                    <div>
+                                        <h5 className="mini-reviewer-name">{review.name}</h5>
+                                        <div className="mini-review-rating">
+                                            {Array.from({ length: 5 }).map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    size={10}
+                                                    fill={i < review.rating ? "#FFD700" : "none"}
+                                                    color={i < review.rating ? "#FFD700" : "#ddd"}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="mini-review-comment">{review.comment}</p>
+                            </div>
+                        ))}
+                    </div>
+
                 </div>
 
                 {/* RIGHT SIDE: SCROLLABLE DETAILS AREA */}
@@ -427,79 +456,97 @@ const MachineryDetail = ({ machine, onClose }: { machine: any, onClose: () => vo
                     <p className="machine-desc">{machine.desc}</p>
 
 
-                    {/* --- REPOSITIONED MAP CARD (ALWAYS VISIBLE) --- */}
-                    <div className="section-title">Location & Availability</div>
-                    <div className="map-card-container">
-                        <div className="map-card-header">
-                            <h4>Location</h4>
-                        </div>
-                        <div className="location-display-box">
-                            <MapPin size={18} color="#2e7d32" />
-                            <span>{distance ? `On-Road Distance: ${distance}` : "Calculating on-road distance..."}</span>
-                        </div>
-                        <div className="map-wrapper">
-                            {isLoaded ? (
-                                <GoogleMap
-                                    mapContainerStyle={containerStyle}
-                                    center={userLocation || defaultCenter}
-                                    zoom={13}
-                                    onLoad={onLoad}
-                                    onUnmount={onUnmount}
-                                    options={mapOptions}
-                                >
-                                    {routePath && (
-                                        <Polyline
-                                            path={routePath}
-                                            options={{
-                                                strokeColor: '#000000',
-                                                strokeWeight: 6,
-                                                strokeOpacity: 0.8,
-                                                clickable: false,
-                                                draggable: false,
-                                                editable: false,
-                                                visible: true,
-                                                zIndex: 50
-                                            }}
-                                        />
-                                    )}
 
-                                    {userLocation && <Marker position={userLocation} label="You" />}
-                                    <Marker position={machineryLocation} label="Machine" />
-                                </GoogleMap>
+                    {/* --- TABBED LOCATION/REVIEWS SECTION --- */}
+                    <div className="section-title">Location & Reviews</div>
+                    <div className="map-card-container">
+                        {/* Tab Switcher */}
+                        <div className="location-reviews-tabs">
+                            <button
+                                className={`tab-btn ${activeTab === 'location' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('location')}
+                            >
+                                Location
+                            </button>
+                            <button
+                                className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('reviews')}
+                            >
+                                Reviews
+                            </button>
+                        </div>
+
+                        {/* Tab Content */}
+                        <div className="tab-content">
+                            {activeTab === 'location' ? (
+                                <>
+                                    <div className="location-display-box">
+                                        <MapPin size={18} color="#2e7d32" />
+                                        <span>{distance ? `On-Road Distance: ${distance}` : "Calculating on-road distance..."}</span>
+                                    </div>
+                                    <div className="map-wrapper">
+                                        {isLoaded ? (
+                                            <GoogleMap
+                                                mapContainerStyle={containerStyle}
+                                                center={userLocation || defaultCenter}
+                                                zoom={13}
+                                                onLoad={onLoad}
+                                                onUnmount={onUnmount}
+                                                options={mapOptions}
+                                            >
+                                                {routePath && (
+                                                    <Polyline
+                                                        path={routePath}
+                                                        options={{
+                                                            strokeColor: '#000000',
+                                                            strokeWeight: 6,
+                                                            strokeOpacity: 0.8,
+                                                            clickable: false,
+                                                            draggable: false,
+                                                            editable: false,
+                                                            visible: true,
+                                                            zIndex: 50
+                                                        }}
+                                                    />
+                                                )}
+
+                                                {userLocation && <Marker position={userLocation} label="You" />}
+                                                <Marker position={machineryLocation} label="Machine" />
+                                            </GoogleMap>
+                                        ) : (
+                                            <div className="map-loading">
+                                                Loading Map...
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
                             ) : (
-                                <div className="map-loading">
-                                    Loading Map...
+                                <div className="reviews-container" style={{ marginBottom: 0, maxHeight: '380px', overflowY: 'auto' }}>
+                                    {reviews.map((review) => (
+                                        <div key={review.id} className="review-card">
+                                            <div className="review-header">
+                                                <img src={review.avatar} alt={review.name} className="reviewer-avatar" />
+                                                <div className="reviewer-info">
+                                                    <h5 className="reviewer-name">{review.name}</h5>
+                                                    <div className="review-rating">
+                                                        {Array.from({ length: 5 }).map((_, i) => (
+                                                            <Star
+                                                                key={i}
+                                                                size={12}
+                                                                fill={i < review.rating ? "#FFD700" : "none"}
+                                                                color={i < review.rating ? "#FFD700" : "#ddd"}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <span className="review-date">{review.date}</span>
+                                            </div>
+                                            <p className="review-comment">{review.comment}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             )}
                         </div>
-                    </div>
-
-
-                    {/* Reviews List - Always Visible now */}
-                    <div className="section-title">Recent Reviews</div>
-                    <div className="reviews-container">
-                        {reviews.slice(0, 3).map((review) => (
-                            <div key={review.id} className="review-card">
-                                <div className="review-header">
-                                    <img src={review.avatar} alt={review.name} className="reviewer-avatar" />
-                                    <div className="reviewer-info">
-                                        <h5 className="reviewer-name">{review.name}</h5>
-                                        <div className="review-rating">
-                                            {Array.from({ length: 5 }).map((_, i) => (
-                                                <Star
-                                                    key={i}
-                                                    size={12}
-                                                    fill={i < review.rating ? "#FFD700" : "none"}
-                                                    color={i < review.rating ? "#FFD700" : "#ddd"}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <span className="review-date">{review.date}</span>
-                                </div>
-                                <p className="review-comment">{review.comment}</p>
-                            </div>
-                        ))}
                     </div>
 
                     <div className="action-buttons-sticky">
