@@ -180,8 +180,16 @@
 
 /* --- Responsive Media Queries --- */
 
-/* Mobile & Large Phone (up to 640px) */
-@media (max-width: 640px) {
+/* Tablet / Small Laptop */
+@media (max-width: 1024px) {
+    .machinery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 Columns */
+    }
+}
+
+/* Mobile & Tablet Portrait (up to 768px) */
+@media (max-width: 768px) {
     .machinery-grid {
         grid-template-columns: 1fr;
         /* 1 Column */
@@ -217,20 +225,6 @@
         padding: 8px 16px;
         font-size: 0.85rem;
         flex: 1 1 auto;
-    }
-}
-
-/* Tablet / Small Laptop */
-@media (max-width: 1024px) {
-    .machinery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 Columns */
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 3rem;
     }
 
     .map-section {
