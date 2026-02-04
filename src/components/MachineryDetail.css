@@ -83,7 +83,8 @@
 
 .main-image-container {
     width: 100%;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 16 / 9;
+    max-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -357,8 +358,8 @@
     border-radius: 20px;
     overflow: hidden;
     position: relative;
-    min-height: 300px;
-    height: 100%;
+    min-height: 0;
+    /* Allow flex to shrink if needed (though it will grow) */
 }
 
 /* END PRESERVED MAP CARD */
@@ -398,7 +399,10 @@
 
 .tab-content {
     flex: 1;
-    overflow-y: auto;
+    overflow: hidden;
+    /* Changed from auto to hidden to let map fill space */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Mini Reviews in Owner Card Area */
