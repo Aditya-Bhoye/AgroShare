@@ -83,7 +83,7 @@
 
 .main-image-container {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -357,7 +357,8 @@
     border-radius: 20px;
     overflow: hidden;
     position: relative;
-    min-height: 150px;
+    min-height: 300px;
+    height: 100%;
 }
 
 /* END PRESERVED MAP CARD */
