@@ -45,12 +45,3 @@ AgroShare is a digital platform that connects **equipment owners** and **farmers
 * Promotes sustainable and shared agricultural practices
 * Improves income opportunities for rural communities
 
-## Hackathon Scope
-
-This project focuses on delivering a **working MVP** with core features: user authentication, equipment listing, booking, and basic admin control.
-
----
-
-**Team Name:** Xlur
-**Hackathon:***Hack Matrix*
-**Theme:** Business, Finance & Digital Economy
